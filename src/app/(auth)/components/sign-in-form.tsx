@@ -1,13 +1,15 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
-import { SignInSchema, signInSchema } from '@/app/types/sign-in'
+import { signIn } from '@/api/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
+import { SignInBody, signInBody } from '@/types/sign-in'
 
 export default function SignInForm() {
   const { toast } = useToast()
@@ -16,13 +18,17 @@ export default function SignInForm() {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<SignInSchema>({
-    resolver: zodResolver(signInSchema),
+  } = useForm<SignInBody>({
+    resolver: zodResolver(signInBody),
   })
 
-  async function handleSignIn({ email }: SignInSchema) {
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
+  async function handleSignIn({ email }: SignInBody) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await authenticate({ email })
 
       toast({
         title: 'Enviamos um link de autenticação para o seu e-mail',
@@ -30,7 +36,10 @@ export default function SignInForm() {
         variant: 'default',
       })
     } catch (error) {
-      console.log('error')
+      toast({
+        title: 'Algo deu errado',
+        description: 'Por favor, tente novamente',
+      })
     }
   }
 
