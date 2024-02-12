@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-export default function Dashboard() {
+export default async function Dashboard() {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>

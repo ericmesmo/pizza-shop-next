@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Sign In',
 }
 
-export default function SignIn() {
+export default async function SignIn() {
   return (
     <div className="p-8">
       <Button asChild className="absolute right-8 top-8" variant="ghost">

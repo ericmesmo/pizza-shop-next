@@ -1,23 +1,28 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { redirect } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import { SignUpSchema, signUpSchema } from '@/types/sign-up'
+import { registerRestaurant } from '@/api/register-restaurant'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useToast } from '@/components/ui/use-toast'
+import { SignUpSchema, signUpSchema } from '@/types/sign-up'
 
 export default function SignUpForm() {
-  const { toast } = useToast()
-
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
+  })
+
+  const { mutateAsync: registerRestaurantFn } = useMutation({
+    mutationFn: registerRestaurant,
   })
 
   async function handleSignIn({
@@ -27,14 +32,21 @@ export default function SignUpForm() {
     restaurantName,
   }: SignUpSchema) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await registerRestaurantFn({
+        email,
+        managerName,
+        phone,
+        restaurantName,
+      })
 
-      toast({
-        title: 'Restaurante cadastrado com sucesso!',
-        variant: 'default',
+      toast.success('Restaurante cadastrado com sucesso!', {
+        action: {
+          label: 'Login',
+          onClick: () => redirect(`/sign-in?email=${email}`),
+        },
       })
     } catch (error) {
-      console.log('error')
+      toast.error('Algo deu errado!')
     }
   }
 

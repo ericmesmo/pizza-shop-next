@@ -1,22 +1,17 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 
-import { Pagination } from '@/components/pagination'
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
+import OrderPagination from './components/order-pagination'
+import OrderTable from './components/order-table'
 import { OrderTableFilters } from './components/order-table-filters'
-import { OrderTableRow } from './components/order-table-row'
 
 export const metadata: Metadata = {
   title: 'Orders',
 }
 
-export default function Orders() {
+export default async function Orders() {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-3xl font-bold tracking-tight">Pedidos</h1>
@@ -39,14 +34,14 @@ export default function Orders() {
               </TableRow>
             </TableHeader>
 
-            <TableBody>
-              <OrderTableRow />
-            </TableBody>
+              <OrderTable />
+            
           </Table>
         </div>
 
-        <Pagination currentPage={0} totalPages={2} perPage={20} />
+          <OrderPagination />
+       
       </div>
-    </div>
+    </div> 
   )
 }
