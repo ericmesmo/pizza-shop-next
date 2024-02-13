@@ -34,14 +34,12 @@ export default async function Orders() {
               </TableRow>
             </TableHeader>
 
-              <OrderTable />
-            
+            <OrderTable />
           </Table>
         </div>
 
-          <OrderPagination />
-       
+        <OrderPagination />
       </div>
-    </div> 
+    </div>
   )
 }
