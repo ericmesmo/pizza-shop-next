@@ -1,33 +1,12 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { BarChart, Loader2 } from 'lucide-react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
+import { getPopularProducts } from '@/api/get-popular-products'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-const popularProducts = [
-  {
-    product: 'Pizza Pepperoni',
-    amount: 40,
-  },
-  {
-    product: 'Pizza Mussarela',
-    amount: 26,
-  },
-  {
-    product: 'Pizza Margareta',
-    amount: 18,
-  },
-  {
-    product: 'Pizza 4 queijos',
-    amount: 50,
-  },
-  {
-    product: 'Pizza Frango com Catupiry',
-    amount: 30,
-  },
-]
 
 const COLORS = [
   colors.sky[500],
@@ -38,6 +17,11 @@ const COLORS = [
 ]
 
 export function PopularProductsChart() {
+  const { data: popularProducts } = useQuery({
+    queryKey: ['metrics', 'popular-products'],
+    queryFn: getPopularProducts,
+  })
+
   return (
     <Card className="col-span-3">
       <CardHeader className="pb-8">

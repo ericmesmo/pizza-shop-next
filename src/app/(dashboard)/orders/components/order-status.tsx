@@ -5,7 +5,7 @@ export type OrderStatus =
   | 'delivering'
   | 'delivered'
 
-interface OrderStatusProps {
+type OrderStatusProps = {
   status: OrderStatus
 }
 
